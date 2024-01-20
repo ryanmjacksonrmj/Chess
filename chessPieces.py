@@ -2,36 +2,29 @@ class Piece:
 	jumpPieces = False
 	movedYet = False
 	lastMoved = False
-	movesStraight = False
-	movesDiagonal = False
-	movesSideways = False
-	movesL = False
 	onlyMovesOne = False
+	onBoard = True
 	
-	def __init__(self, color, name, xpos, ypos):
-		self.color = color
-		self.name = name
-		self.xpos = xpos
-		self.ypos = ypos
+	def __init__(self, white, occupying_square):
+		self.white = white
+		self.occupying_square = occupying_square
 
 	def pathClear():
-		pass	
+		pass
 
-	def move(self, xpos, ypos):
+	def move(self, occupying_square):
 		if movingCorrectly and pathClear and spaceEmpty:
-			self.xpos = xpos
-			self.ypos = ypos
+			self.occupying_square = occupying_square
 
-	def take(self, xpos, ypos):
+	def take(self, occupying_square):
 		if movingCorrectly and pathClear and spaceOccupied and oppositeColor and notKing:	
 				pass
 		
 	def reportPosition(self):
-		position = (self.name, self.xpos, self.ypos)
+		position = (self.name, self.occupying_square)
 		return position
 
 class Pawn(Piece):
-	movesStraight = True
 	canMoveTwo = True
 	onlyMovesOne = True
 	takesDiagonal = True
@@ -40,33 +33,28 @@ class Pawn(Piece):
 
 
 class Rook(Piece):
-	movesStraight = True
-	movesSideways = True
 	pass
 
 class Knight(Piece):
 	jumpPieces = True
-	movesL = True
 	pass
 
 class Bishop(Piece):
-	movesDiagonal = True
 	pass
 
 class Queen(Piece):
-	movesDiagonal = True
-	movesSideways = True
-	movesStraight = True
 	pass
 
 class King(Piece):
-	movesDiagonal = True
-	movesSideways = True
-	movesStraight = True
 	onlyMovesOne = True
 	pass
 
 class Board:
 	occupied = {}
 
-def 
+	def update():
+		pass
+
+class Player:
+	def __init__(self, white):
+		self.white = white
