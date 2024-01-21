@@ -1,10 +1,7 @@
-a = True
-print (a)
-a = not a
-print (a)
-a = not a
-print (a)
-a^=True
-print(a)
-a^=True
-print(a)
+for square_on in range(0,64):
+	lower = square_on - 9 * (min((square_on % 8), square_on // 8))
+	upper= square_on + 9 * ((min(8 - (square_on % 8), 8 - (square_on // 8))) -1)
+	# upper = square_on + 9 * (min((square_on % 8), square_on // 8))
+	print ("Square " + str(square_on))
+	print ("Lower: " + str(lower))
+	print ("Upper: " + str(upper))
