@@ -20,7 +20,12 @@ class Piece:
 	def diagonal_movement(self, square_on):
 		lower = square_on - 9 * (min((square_on % 8), square_on // 8))
 		upper= square_on + 9 * ((min(8 - (square_on % 8), 8 - (square_on // 8))) -1)
-		for i in range(lower, upper + 1, 8):
+		for i in range(lower, upper + 1, 9):
+			if i != square_on:
+				self.attack_squares.add(i)
+		lower= square_on - 7 * (min(7 - (square_on % 8), (square_on // 8)))
+		upper= square_on + 7 * (min((square_on % 8), (7 - square_on // 8)))		
+		for j in range(lower, upper +1, 7):
 			if i != square_on:
 				self.attack_squares.add(i)
 
@@ -47,16 +52,4 @@ class King(Piece):
 
 class Player:
 	def __init__(self, white):
-		self.white = white
-
-
-class Board:
-
-	squares = {}
-	for key in range (0,64):
-		squares[key] = None
-
-	occupied = set()
-
-	def __init__(self):
-		pass
+		self.white = white		

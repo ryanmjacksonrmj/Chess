@@ -1,6 +1,3 @@
-1. Square entered.. I get back (-1, -1) if the square is off the board or otherwise invalid input is entered
-So this algorithm is assuming I have a valid entry for starting square and a valid entry for ending square but it does not check to make sure anything else including whether or not those are two different squares
-
 1. Is starting square occupied
 2. Is starting square occupied by a piece of the correct color
 3. Is the ending square in a direction that the piece moves
@@ -10,7 +7,6 @@ So this algorithm is assuming I have a valid entry for starting square and a val
 
 
 
-for i in range((square_on % 8)-square_on//8, 65, 8):	
 
 
 
