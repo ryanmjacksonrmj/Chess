@@ -1,3 +1,5 @@
+from board import *
+
 class Piece:
 	def __init__(self, is_white, square):
 		self.is_white = is_white
@@ -21,7 +23,6 @@ class Pawn(Piece):
 			self.possible_moves.add(self.square - 9)
 			if self.moved_yet == False:
 				self.possible_moves.add(self.square - 2)
-
 
 class Rook(Piece):
 	pass
