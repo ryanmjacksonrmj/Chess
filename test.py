@@ -1,20 +1,13 @@
-class Piece:
-	def __init__(self, is_white, square):
-		self.is_white = is_white
-		self.square = square
-		self.moves_only_one = False
-		self.moved_yet = True
-		self.possible_moves = set()
+from board import *
+from pieces import *
 
-class Rook(Piece):
-	def __init__(self, is_white, square):
-		super().__init__(is_white, square)
+board = Board()
+board.new_game()
+
+print(board.squares[41].piece.moved_yet)
 
 
-a = Piece(True, 25)
+board.squares[60].piece = board.squares[32].piece
+board.squares[32].piece = None
 
-b = Rook(True, 15)
-
-
-print(a.moved_yet)
-print(b.moved_yet)
+board.squares[60]
