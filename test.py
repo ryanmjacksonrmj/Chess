@@ -4,10 +4,8 @@ from pieces import *
 board = Board()
 board.new_game()
 
-print(board.squares[41].piece.moved_yet)
+board.update_moves()
 
-
-board.squares[60].piece = board.squares[32].piece
-board.squares[32].piece = None
-
-board.squares[60]
+#For now this is just printing off all of the 
+for square in board.squares:
+	print(board.squares[square].piece_moves)

@@ -12,27 +12,26 @@ class Board:
 		is_white = True
 		for square in range (1,58,8):
 			self.squares[square].piece = Pawn(is_white, square)
+		piece_iterator = iter(piece_order)
 		for square in range (0,57,8):
-			for i in range(0,8):
-				self.squares[square].piece = piece_order[i](is_white, square)
+				self.squares[square].piece = next(piece_iterator)(is_white, square)
 		is_white = False
 		for square in range (6,63,8):
 			self.squares[square].piece = Pawn(is_white, square)
+		piece_iterator = iter(piece_order)
 		for square in range (7,64,8):
-			for i in range(0,8):
-				self.squares[square].piece = piece_order[i](is_white, square)
+				self.squares[square].piece = next(piece_iterator)(is_white, square)
 	
 	def update_moves(self):
 		for square in self.squares:
-			square.get_piece_moves(self.board)
-
+			self.squares[square].get_piece_moves(self.board)
+	
 class Square:
 	def __init__(self, number):
 		self.piece = None
 		self.number = number
 		self.nearest_pieces = {}
-		self.white_moves = {}
-		self.black_moves = {}
+		self.piece_moves = set()
 		self.border = set()
 		if number in range(0,8):
 			self.border.add("left")
@@ -86,7 +85,7 @@ class Square:
 	#This traverses the list of spaces in self.neighbors and determines what the closest space is to the square in each direction with a piece on it. Then it sets a dictionary ("moves") that says how far a piece can travel given that piece
 	def get_moves(self, board):
 		self.moves = {}
-		if self.piece == None:
+		if self.piece is None:
 			return
 		is_white = self.piece.is_white
 		#going through the directions you can travel
@@ -110,7 +109,7 @@ class Square:
 			if i not in self.moves:
 				self.moves[i] = self.neighbors[i]
 
-	def knight_move(self, board):
+	def get_knight_moves(self, board):
 		distance = (10, 17, 15, 6, -6, -10, -17, -15)
 		moves = set()
 		knight_moves = set()
@@ -128,12 +127,13 @@ class Square:
 		piece = self.piece
 		is_white = piece.is_white
 		pawn_moves = set()
-		distance = (-7, 9, 1)
+		distance = {-7, 9, 1}
 		color_determining_multiplier = 1 if is_white else -1
 		can_move_two = board.squares[self.number + (1 * color_determining_multiplier)].piece == None
 		if piece.moved_yet == False and can_move_two == True:
 			distance.add(2)
 		for square in distance:
+			on_board = False
 			test_square = self.number + (square * color_determining_multiplier)
 			if test_square >= 0 and test_square <= 63:
 				on_board = True
@@ -142,13 +142,15 @@ class Square:
 				on_board = False
 			if square > 0 and square <= 2 and on_board == True and test_piece == None:
 				pawn_moves.add(test_square)
-			elif on_board == True and test_piece == True and piece.color != test_piece.color and square < -2 or square > 2:
+			elif on_board == True and test_piece == True and piece.color != test_piece.color and square < -2:
+				pawn_moves.add(test_square)
+			elif on_board == True and test_piece == True and piece.color != test_piece.color and square > 2:
 				pawn_moves.add(test_square)
 		return pawn_moves
 
 	def get_piece_moves(self, board):
 		# This function returns a set with the squares of legal moves in it. To check if a move is valid when the pieces is moved all the program needs to check (when this is fully implemented) is whether or not the destination square of the piece is in this set.
-		self.get_moves(self, board)
+		self.get_moves(board)
 		self.piece_moves = set()
 		if self.piece == None:
 			return
@@ -156,7 +158,7 @@ class Square:
 			piece = self.piece
 		movement_type = piece.movement_type
 		if type(piece) == Knight:
-			self.piece_moves = self.knight_move(board)
+			self.piece_moves = self.get_knight_moves(board)
 		elif type(piece) == King:
 			for direction in movement_type:
 				#My goal here is to get one square from each movement direction to add to the set. No support here for castling yet. I think not being able to move into check and those sorts of rules will eventually take care of themselves with the other things I need to support check and so don't need to be added here.
