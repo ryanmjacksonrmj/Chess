@@ -1,11 +1,23 @@
 from pieces import *
+from ascii import *
 
 class Board:
 	def __init__(self):
 		self.board = self
-		self.squares = {}	
+		self.squares = {}
+		self.map = []
+		self.ascii = Ascii()	
 		for key in range (0,64):
 			self.squares[key] = Square(key)
+
+	def get_map(self):
+		self.map = []
+		for square in self.squares:
+			piece = self.squares[square].piece
+			if piece == None:
+				self.map.append("  ")
+			else:
+				self.map.append(piece.piece_name)
 
 	def new_game(self):
 		piece_order = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
