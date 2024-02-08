@@ -1,11 +1,31 @@
 from pieces import *
+from ascii import *
 
 class Board:
 	def __init__(self):
 		self.board = self
-		self.squares = {}	
+		self.squares = {}
+		self.map = []
+		self.ascii = Ascii()
+		self.white_to_move = True
+		self.algebraic_squares = set()	
 		for key in range (0,64):
 			self.squares[key] = Square(key)
+		columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+		rows = range(8, 0,-1)
+		for column in columns:
+			for row in rows:
+				algebraic_square = column + str(row)
+				self.algebraic_squares.add(algebraic_square)
+
+	def get_map(self):
+		self.map = []
+		for square in self.squares:
+			piece = self.squares[square].piece
+			if piece == None:
+				self.map.append("  ")
+			else:
+				self.map.append(piece.piece_name)
 
 	def new_game(self):
 		piece_order = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
@@ -30,6 +50,7 @@ class Square:
 	def __init__(self, number):
 		self.piece = None
 		self.number = number
+		self.algebraic = None
 		self.nearest_pieces = {}
 		self.piece_moves = set()
 		self.border = set()
@@ -43,6 +64,11 @@ class Square:
 			self.border.add("bottom")
 		# self.neighbors holds a dictionary of squares a piece could travel to from the current square given a direction (e.g. forward) assuming there are no other pieces in the way
 		self.neighbors = {}
+		columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+		rows = ['8', '7', '6', '5', '4', '3', '2', '1']
+		column_index = number // 8
+		row_index = number % 8
+		self.algebraic = columns[column_index] + rows[row_index]
 		
 		if "left" in self.border:
 			self.neighbors['left'] = range(0)
@@ -83,6 +109,7 @@ class Square:
 			self.neighbors['backward_left'] = range(number -9, self.number - 9 * (min((self.number % 8), self.number // 8)) -1, -9)
 	
 	#This traverses the list of spaces in self.neighbors and determines what the closest space is to the square in each direction with a piece on it. Then it sets a dictionary ("moves") that says how far a piece can travel given that piece
+
 	def get_moves(self, board):
 		self.moves = {}
 		if self.piece is None:
